@@ -1,0 +1,3108 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ═══════════════════════════════════════════════════
+       PRIMARY SEO META
+  ═══════════════════════════════════════════════════ -->
+  <title>LogiCore 2026 — Free Global Freight Cost & Compliance Engine</title>
+  <meta name="description" content="LogiCore 2026 is the free professional-grade global freight calculator. Compute landed costs, customs duties, carbon emissions (CBAM), and 3D container load planning — no account needed.">
+  <meta name="keywords" content="freight calculator, landed cost calculator, customs duty calculator, CBAM carbon emissions, freight class calculator, 3D load planning, LTL FTL ocean air freight, international shipping cost">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://logicore2026.vercel.app/">
+
+  <!-- ═══════════════════════════════════════════════════
+       OPEN GRAPH / SOCIAL
+  ═══════════════════════════════════════════════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LogiCore 2026 — Free Global Freight & Landed Cost Engine">
+  <meta property="og:description" content="Professional freight cost estimation, CBAM carbon compliance, customs duties, and 3D container load planning. Free. No signup required.">
+  <meta property="og:url" content="https://logicore2026.vercel.app/">
+  <meta property="og:site_name" content="LogiCore 2026">
+  <meta property="og:image" content="https://logicore2026.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LogiCore 2026 — Free Global Freight Engine">
+  <meta name="twitter:description" content="Calculate freight costs, landed costs, customs duties, carbon fees & 3D container plans — free, no login.">
+  <meta name="twitter:image" content="https://logicore2026.vercel.app/og-image.png">
+
+  <!-- ═══════════════════════════════════════════════════
+       STRUCTURED DATA — WEBAPP + FAQ
+  ═══════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://logicore2026.vercel.app/#app",
+        "name": "LogiCore 2026",
+        "url": "https://logicore2026.vercel.app/",
+        "description": "Free professional global freight cost calculator with CBAM carbon compliance, customs duties, and 3D container load planning.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "Freight class calculation (NMFC density-based)",
+          "Landed cost breakdown including duties and taxes",
+          "CBAM carbon border adjustment estimation",
+          "3D interactive container load visualizer",
+          "Customs compliance checklist",
+          "Audit trail export"
+        ],
+        "screenshot": "https://logicore2026.vercel.app/og-image.png",
+        "creator": { "@type": "Organization", "name": "LogiCore 2026" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://logicore2026.vercel.app/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How accurate are LogiCore's freight rate estimates?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "LogiCore uses industry-standard formulas — NMFC freight class density tables, published base tariff ranges, and government-published duty schedules. Estimates are indicative; always confirm with your carrier before booking."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is CBAM and how does LogiCore calculate it?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "CBAM (Carbon Border Adjustment Mechanism) is the EU's carbon levy on imported goods effective 2026. LogiCore estimates CBAM fees using the EU's published default emission factors per commodity and the current ETS carbon price."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does LogiCore require account registration?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. All core calculations are completely free with no account required. PDF export is available after a brief one-time email opt-in."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════
+       FONTS — DM Sans + DM Mono (refined, professional)
+  ═══════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* ════════════════════════════════
+       DESIGN TOKENS
+    ════════════════════════════════ */
+    :root {
+      --ink:       #0D1117;
+      --ink-soft:  #3D4451;
+      --ink-muted: #6B7280;
+      --surface:   #FFFFFF;
+      --surface-2: #F5F6F8;
+      --surface-3: #EBEDF2;
+      --border:    #DDE1EA;
+      --border-strong: #C2C8D6;
+      --cobalt:    #1B4FD8;
+      --cobalt-dk: #1440B5;
+      --cobalt-lt: #EEF2FD;
+      --amber:     #D97706;
+      --amber-lt:  #FEF3C7;
+      --jade:      #047857;
+      --jade-lt:   #D1FAE5;
+      --rose:      #BE123C;
+      --rose-lt:   #FFE4E6;
+      --slate:     #475569;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      --font-serif:'Libre Baskerville', serif;
+      --radius:    6px;
+      --radius-lg: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow:    0 4px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.04);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.05);
+    }
+
+    /* ════════════════════════════════
+       RESET & BASE
+    ════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--surface-2);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--cobalt); text-decoration: none; }
+    button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
+    input, select, textarea {
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      box-shadow: 0 0 0 3px rgba(27,79,216,.15);
+    }
+
+    /* ════════════════════════════════
+       SCROLLBAR
+    ════════════════════════════════ */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface-3); }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
+
+    /* ════════════════════════════════
+       UTILITY
+    ════════════════════════════════ */
+    .hidden { display: none !important; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+    .mono { font-family: var(--font-mono); }
+    .fade-in { animation: fadeIn .35s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ════════════════════════════════
+       LAYOUT
+    ════════════════════════════════ */
+    .container { max-width: 1380px; margin: 0 auto; padding: 0 24px; }
+
+    /* ════════════════════════════════
+       HEADER
+    ════════════════════════════════ */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      gap: 16px;
+    }
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--cobalt);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-text { line-height: 1.1; }
+    .logo-text strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.3px;
+    }
+    .logo-text span {
+      font-size: 11px;
+      color: var(--ink-muted);
+      font-weight: 400;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .header-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: var(--jade-lt);
+      color: var(--jade);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .btn-icon {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      color: var(--ink-soft);
+      transition: background .15s;
+    }
+    .btn-icon:hover { background: var(--surface-3); }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 16px;
+      height: 34px;
+      background: var(--cobalt);
+      color: #fff;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .15s, transform .1s;
+    }
+    .btn-primary:hover { background: var(--cobalt-dk); }
+    .btn-primary:active { transform: scale(.98); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 14px;
+      height: 34px;
+      background: var(--surface);
+      color: var(--ink-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 500;
+      transition: background .15s, border-color .15s;
+    }
+    .btn-secondary:hover { background: var(--surface-2); border-color: var(--border-strong); }
+
+    /* ════════════════════════════════
+       DISCLAIMER BANNER
+    ════════════════════════════════ */
+    .disclaimer-bar {
+      background: var(--amber-lt);
+      border-bottom: 1px solid #FCD34D;
+      padding: 8px 0;
+      font-size: 12px;
+      color: #92400E;
+      text-align: center;
+    }
+    .disclaimer-bar strong { font-weight: 600; }
+
+    /* ════════════════════════════════
+       HERO STRIP
+    ════════════════════════════════ */
+    .hero-strip {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0 24px;
+    }
+    .hero-strip h1 {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 700;
+      letter-spacing: -.5px;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .hero-strip h1 em {
+      font-style: normal;
+      color: var(--cobalt);
+    }
+    .hero-strip p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--ink-muted);
+      max-width: 680px;
+    }
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: var(--surface);
+    }
+    .hero-chip svg { color: var(--cobalt); }
+
+    /* ════════════════════════════════
+       TAB NAV
+    ════════════════════════════════ */
+    .tab-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+    }
+    .tab-nav-inner {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tab-nav-inner::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 14px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color .15s, border-color .15s;
+      flex-shrink: 0;
+    }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active {
+      color: var(--cobalt);
+      border-bottom-color: var(--cobalt);
+      font-weight: 600;
+    }
+    .tab-btn svg { opacity: .7; }
+    .tab-btn.active svg { opacity: 1; }
+
+    /* ════════════════════════════════
+       MAIN LAYOUT
+    ════════════════════════════════ */
+    .app-body { padding: 24px 0 48px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Two-column grid */
+    .grid-2-1 {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .grid-2-1, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ════════════════════════════════
+       CARDS
+    ════════════════════════════════ */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .card-header h2, .card-header h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -.1px;
+    }
+    .card-body { padding: 20px; }
+    .card-section { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .card-section:last-child { border-bottom: none; }
+
+    /* ════════════════════════════════
+       FORM ELEMENTS
+    ════════════════════════════════ */
+    .form-group { margin-bottom: 14px; }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 8px 11px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--surface);
+      transition: border-color .15s;
+    }
+    .form-control:focus { border-color: var(--cobalt); }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+    /* ════════════════════════════════
+       CARGO ITEM BLOCK
+    ════════════════════════════════ */
+    .cargo-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .cargo-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .cargo-item-header span {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .btn-delete {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      color: var(--rose);
+      transition: background .15s;
+    }
+    .btn-delete:hover { background: var(--rose-lt); }
+
+    /* ════════════════════════════════
+       CALCULATE BUTTON
+    ════════════════════════════════ */
+    .btn-calculate {
+      width: 100%;
+      padding: 12px;
+      background: var(--cobalt);
+      color: #fff;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      transition: background .15s, box-shadow .15s, transform .1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-calculate:hover {
+      background: var(--cobalt-dk);
+      box-shadow: 0 4px 14px rgba(27,79,216,.35);
+    }
+    .btn-calculate:active { transform: scale(.99); }
+
+    /* ════════════════════════════════
+       RESULTS PANEL
+    ════════════════════════════════ */
+    .result-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--ink-muted);
+    }
+    .result-empty svg { opacity: .25; margin-bottom: 12px; }
+    .result-empty p { font-size: 13px; }
+
+    /* Cost line items */
+    .cost-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .cost-line:last-child { border-bottom: none; }
+    .cost-line-label { color: var(--ink-soft); }
+    .cost-line-val { font-weight: 600; font-family: var(--font-mono); color: var(--ink); }
+    .cost-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0 0;
+      margin-top: 4px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .cost-total .val { color: var(--cobalt); font-family: var(--font-mono); font-size: 18px; }
+
+    /* Stat pill */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .stat-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .stat-pill .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .stat-pill .value {
+      font-size: 17px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--ink);
+      margin-top: 2px;
+    }
+    .stat-pill .sub { font-size: 11px; color: var(--ink-muted); margin-top: 1px; }
+
+    /* Freight class badge */
+    .fc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--cobalt-lt);
+      color: var(--cobalt);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    /* Carbon badge */
+    .co2-strip {
+      background: var(--jade-lt);
+      border: 1px solid #A7F3D0;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .co2-strip svg { color: var(--jade); flex-shrink: 0; }
+    .co2-strip .co2-text { font-size: 13px; }
+    .co2-strip .co2-text strong { color: var(--jade); }
+
+    /* Alert strips */
+    .alert {
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      font-size: 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .alert-warn { background: var(--amber-lt); border-left: 3px solid var(--amber); color: #78350F; }
+    .alert-danger { background: var(--rose-lt); border-left: 3px solid var(--rose); color: #9F1239; }
+    .alert-success { background: var(--jade-lt); border-left: 3px solid var(--jade); color: #065F46; }
+    .alert-info { background: var(--cobalt-lt); border-left: 3px solid var(--cobalt); color: #1E40AF; }
+    .alert svg { flex-shrink: 0; margin-top: 1px; }
+
+    /* ════════════════════════════════
+       LOADING SPINNER
+    ════════════════════════════════ */
+    .spinner-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 56px 24px;
+      gap: 14px;
+    }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--cobalt);
+      border-radius: 50%;
+    }
+
+    /* ════════════════════════════════
+       COMPLIANCE TAB
+    ════════════════════════════════ */
+    .compliance-grid { display: grid; grid-template-columns: 340px 1fr; gap: 20px; }
+    @media (max-width: 900px) { .compliance-grid { grid-template-columns: 1fr; } }
+
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-icon { flex-shrink: 0; margin-top: 1px; }
+    .check-yes { color: var(--jade); }
+    .check-no  { color: var(--border-strong); }
+
+    .risk-level {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .risk-low  { background: var(--jade-lt); color: var(--jade); }
+    .risk-med  { background: var(--amber-lt); color: var(--amber); }
+    .risk-high { background: var(--rose-lt); color: var(--rose); }
+
+    /* ════════════════════════════════
+       3D SPACE PLANNER
+    ════════════════════════════════ */
+    .planner-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+    @media (max-width: 900px) { .planner-layout { grid-template-columns: 1fr; } }
+
+    #canvas-3d-wrap {
+      background: var(--ink);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      height: 420px;
+      position: relative;
+    }
+    #canvas-3d-wrap canvas { display: block; }
+    .canvas-overlay {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: flex;
+      gap: 8px;
+    }
+    .canvas-btn {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .canvas-btn:hover { background: rgba(255,255,255,.2); }
+
+    .util-bar {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      margin-top: 12px;
+    }
+    .util-bar-label { font-size: 11px; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+    .util-bar-track { height: 6px; background: var(--surface-3); border-radius: 10px; overflow: hidden; }
+    .util-bar-fill { height: 100%; background: var(--cobalt); border-radius: 10px; transition: width .5s ease; }
+
+    /* ════════════════════════════════
+       AUDIT TRAIL
+    ════════════════════════════════ */
+    .audit-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .audit-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--ink-muted);
+    }
+    .audit-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-soft);
+    }
+    .audit-table tr:last-child td { border-bottom: none; }
+    .audit-table tr:hover td { background: var(--surface-2); }
+    .audit-mono { font-family: var(--font-mono); color: var(--ink); }
+
+    /* ════════════════════════════════
+       MODAL (PDF GATE)
+    ════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(13,17,23,.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 460px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--ink); }
+    .modal-body { padding: 24px; }
+    .modal-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* ════════════════════════════════
+       AUTH MODAL
+    ════════════════════════════════ */
+    .auth-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .auth-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .auth-tab.active { color: var(--cobalt); border-bottom-color: var(--cobalt); }
+
+    /* ════════════════════════════════
+       BLOG SECTION
+    ════════════════════════════════ */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .blog-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .blog-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .blog-card-img {
+      height: 160px;
+      background: linear-gradient(135deg, var(--cobalt-lt), #DBEAFE);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .blog-card-body { padding: 18px; }
+    .blog-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--cobalt);
+      background: var(--cobalt-lt);
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .blog-card-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .blog-card-body p { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+    .blog-card-body .meta {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .blog-read-btn {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cobalt);
+    }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    .site-footer {
+      background: var(--ink);
+      color: rgba(255,255,255,.55);
+      padding: 40px 0 28px;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 48px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    .footer-brand strong { color: #fff; font-size: 15px; font-weight: 700; display: block; margin-bottom: 6px; }
+    .footer-col h4 { color: rgba(255,255,255,.8); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; }
+    .footer-col a { display: block; color: rgba(255,255,255,.45); margin-bottom: 7px; transition: color .15s; }
+    .footer-col a:hover { color: rgba(255,255,255,.8); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .footer-disclaimer {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      font-size: 11.5px;
+      color: rgba(255,255,255,.35);
+      line-height: 1.65;
+    }
+
+    /* ════════════════════════════════
+       CHART CONTAINER
+    ════════════════════════════════ */
+    .chart-wrap { position: relative; height: 220px; margin-top: 16px; }
+
+    /* ════════════════════════════════
+       QUICK STATS ROW
+    ════════════════════════════════ */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 900px) { .quick-stats { grid-template-columns: 1fr 1fr; } }
+    .qs-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+    }
+    .qs-card .qs-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+    .qs-card .qs-value {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--ink);
+    }
+    .qs-card .qs-sub { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+
+    /* ════════════════════════════════
+       SECTION HEADINGS
+    ════════════════════════════════ */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-head h2 { font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -.3px; }
+    .section-head p { font-size: 13px; color: var(--ink-muted); }
+
+    /* ════════════════════════════════
+       OCR DROP ZONE
+    ════════════════════════════════ */
+    .dropzone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .dropzone:hover, .dropzone.over {
+      border-color: var(--cobalt);
+      background: var(--cobalt-lt);
+    }
+    .dropzone svg { color: var(--ink-muted); margin-bottom: 8px; }
+    .dropzone p { font-size: 12px; color: var(--ink-muted); }
+    .dropzone strong { color: var(--cobalt); }
+
+    /* ════════════════════════════════
+       PROGRESS BAR
+    ════════════════════════════════ */
+    .progress-bar { height: 4px; background: var(--surface-3); border-radius: 10px; overflow: hidden; margin-top: 6px; }
+    .progress-fill { height: 100%; border-radius: 10px; transition: width .6s ease; }
+
+    /* API status dot */
+    .api-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--jade);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+    .api-dot.red { background: var(--rose); animation: none; }
+
+    /* ════════════════════════════════
+       INFOBOX
+    ════════════════════════════════ */
+    .infobox {
+      background: var(--cobalt-lt);
+      border: 1px solid #BFDBFE;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #1E3A8A;
+      line-height: 1.55;
+    }
+    .infobox strong { font-weight: 600; }
+
+    /* ════════════════════════════════
+       RATE SOURCE TAG
+    ════════════════════════════════ */
+    .source-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      background: var(--surface-3);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     DISCLAIMER BANNER
+═══════════════════════════════════════════ -->
+<div class="disclaimer-bar" role="note">
+  <strong>Estimates Only.</strong> LogiCore 2026 provides indicative freight, duty, and carbon estimates for planning purposes. Always confirm rates and compliance requirements with your licensed customs broker and carrier before booking.
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header class="site-header" role="banner">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo-mark" aria-label="LogiCore 2026 home">
+        <!-- Logo icon SVG -->
+        <div class="logo-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <strong>LogiCore 2026</strong>
+          <span>Global Freight Engine</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <span class="header-badge">Free Tool</span>
+        <button class="btn-icon" id="help-btn" title="Help & Methodology" aria-label="Help">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+        <button class="btn-secondary" id="auth-btn" aria-label="Sign in or create account">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="auth-label">Sign In</span>
+        </button>
+        <button class="btn-primary" id="pdf-btn" aria-label="Export report as PDF">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Export PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     HERO STRIP
+═══════════════════════════════════════════ -->
+<section class="hero-strip" aria-labelledby="hero-h1">
+  <div class="container">
+    <h1 id="hero-h1">The <em>professional-grade</em> free freight &amp; compliance engine</h1>
+    <p>Calculate global landed costs, customs duties, CBAM carbon fees, and visualize container loading in 3D — with full audit trails. No account required.</p>
+    <div class="hero-chips" role="list" aria-label="Key features">
+      <span class="hero-chip" role="listitem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        NMFC Freight Class
+      </span>
+      <span class="hero-chip" role="listitem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Landed Cost Breakdown
+      </span>
+      <span class="hero-chip" role="listitem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        EU CBAM 2026 Carbon Fees
+      </span>
+      <span class="hero-chip" role="listitem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        HS Code Duty Lookup
+      </span>
+      <span class="hero-chip" role="listitem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        3D Container Load Planner
+      </span>
+      <span class="hero-chip" role="listitem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Sanction &amp; Compliance Check
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB NAVIGATION
+═══════════════════════════════════════════ -->
+<nav class="tab-nav" role="navigation" aria-label="Application sections">
+  <div class="container">
+    <div class="tab-nav-inner" role="tablist">
+      <button class="tab-btn active" data-tab="calculator" role="tab" aria-selected="true" aria-controls="panel-calculator" id="tab-calculator">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="10" x2="8" y2="10"/><line x1="11" y1="14" x2="8" y2="14"/><line x1="11" y1="18" x2="8" y2="18"/></svg>
+        Freight Calculator
+      </button>
+      <button class="tab-btn" data-tab="compliance" role="tab" aria-selected="false" aria-controls="panel-compliance" id="tab-compliance">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Compliance Checker
+      </button>
+      <button class="tab-btn" data-tab="planner" role="tab" aria-selected="false" aria-controls="panel-planner" id="tab-planner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        3D Load Planner
+      </button>
+      <button class="tab-btn" data-tab="audit" role="tab" aria-selected="false" aria-controls="panel-audit" id="tab-audit">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Audit Trail
+      </button>
+      <button class="tab-btn" data-tab="blog" role="tab" aria-selected="false" aria-controls="panel-blog" id="tab-blog">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Freight Intel
+      </button>
+      <button class="tab-btn" data-tab="contact" role="tab" aria-selected="false" aria-controls="panel-contact" id="tab-contact">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════ -->
+<main class="app-body" role="main">
+  <div class="container">
+
+    <!-- ─────────────────────────────────────
+         PANEL: FREIGHT CALCULATOR
+    ───────────────────────────────────── -->
+    <div class="tab-panel active fade-in" id="panel-calculator" role="tabpanel" aria-labelledby="tab-calculator">
+
+      <!-- Quick Stats -->
+      <div class="quick-stats" aria-label="Live market indicators">
+        <div class="qs-card">
+          <div class="qs-label">SCFI Index <span class="api-dot" title="Live estimate"></span></div>
+          <div class="qs-value" id="qs-scfi">1,842</div>
+          <div class="qs-sub">Shanghai Composite (indicative)</div>
+        </div>
+        <div class="qs-card">
+          <div class="qs-label">EU ETS Carbon Price <span class="api-dot"></span></div>
+          <div class="qs-value" id="qs-ets">€62.40</div>
+          <div class="qs-sub">per tonne CO₂ (indicative)</div>
+        </div>
+        <div class="qs-card">
+          <div class="qs-label">Diesel Fuel Surcharge</div>
+          <div class="qs-value">24.8%</div>
+          <div class="qs-sub">US national average (FMCSA basis)</div>
+        </div>
+        <div class="qs-card">
+          <div class="qs-label">WCI Trans-Pacific</div>
+          <div class="qs-value">$3,210</div>
+          <div class="qs-sub">40ft Shanghai–LAX (indicative)</div>
+        </div>
+      </div>
+
+      <!-- Main calculator grid -->
+      <div class="grid-2-1">
+
+        <!-- LEFT: Inputs -->
+        <div>
+          <!-- Origin & Destination -->
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-header">
+              <h2>Route & Shipment</h2>
+              <span class="source-tag">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Indicative rates
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid-2" style="margin-bottom:12px">
+                <div class="form-group">
+                  <label class="form-label" for="origin-country">Origin Country</label>
+                  <select class="form-control" id="origin-country">
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                    <option value="MEX">Mexico</option>
+                    <option value="CHN">China</option>
+                    <option value="DEU">Germany</option>
+                    <option value="GBR">United Kingdom</option>
+                    <option value="JPN">Japan</option>
+                    <option value="KOR">South Korea</option>
+                    <option value="AUS">Australia</option>
+                    <option value="IND">India</option>
+                    <option value="BRA">Brazil</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="dest-country">Destination Country</label>
+                  <select class="form-control" id="dest-country">
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                    <option value="MEX">Mexico</option>
+                    <option value="CHN">China</option>
+                    <option value="EU">European Union</option>
+                    <option value="DEU">Germany</option>
+                    <option value="GBR">United Kingdom</option>
+                    <option value="JPN">Japan</option>
+                    <option value="KOR">South Korea</option>
+                    <option value="AUS">Australia</option>
+                    <option value="IND">India</option>
+                    <option value="BRA">Brazil</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="shipment-mode">Shipment Mode</label>
+                <select class="form-control" id="shipment-mode">
+                  <option value="LTL">LTL — Less Than Truckload</option>
+                  <option value="FTL">FTL — Full Truckload</option>
+                  <option value="Ocean-FCL">Ocean FCL — Full Container Load</option>
+                  <option value="Ocean-LCL">Ocean LCL — Less than Container</option>
+                  <option value="Air">Air Freight</option>
+                  <option value="Courier">Express Courier (DHL / FedEx / UPS)</option>
+                </select>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="commodity-value">Declared Goods Value (USD)</label>
+                  <input type="number" class="form-control" id="commodity-value" placeholder="e.g. 15000" min="0">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="hs-code">HS / HTS Code</label>
+                  <input type="text" class="form-control" id="hs-code" placeholder="e.g. 8471.30" maxlength="12">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="incoterm">Incoterm</label>
+                <select class="form-control" id="incoterm">
+                  <option value="EXW">EXW — Ex Works</option>
+                  <option value="FOB">FOB — Free on Board</option>
+                  <option value="CIF" selected>CIF — Cost, Insurance &amp; Freight</option>
+                  <option value="DDP">DDP — Delivered Duty Paid</option>
+                  <option value="DAP">DAP — Delivered at Place</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cargo Items -->
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-header">
+              <h2>Cargo Details</h2>
+              <button class="btn-secondary" id="add-cargo-btn" style="height:28px;padding:0 10px;font-size:12px" aria-label="Add another cargo item">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Item
+              </button>
+            </div>
+            <div class="card-body" style="padding-bottom:8px">
+              <div id="cargo-items-list">
+                <!-- Items injected by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- OCR Upload -->
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-header">
+              <h2>Document Auto-Fill</h2>
+              <span class="source-tag">OCR Processing</span>
+            </div>
+            <div class="card-body">
+              <div class="dropzone" id="ocr-zone" role="button" tabindex="0" aria-label="Upload shipping document for auto-fill">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                <p><strong>Drop Bill of Lading, Invoice, or Packing List</strong><br>PDF, CSV, XLSX — auto-extracts weights, dims, values</p>
+              </div>
+              <div id="ocr-status" class="hidden" style="margin-top:10px">
+                <div class="alert alert-info">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span id="ocr-msg">Parsing document...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculate -->
+          <button class="btn-calculate" id="calculate-btn" aria-label="Run freight cost and compliance calculation">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Calculate Landed Cost &amp; Compliance
+          </button>
+
+          <div class="infobox" style="margin-top:12px">
+            <strong>Methodology:</strong> Freight class determined via NMFC density thresholds. Base rates derived from published carrier tariff ranges (STB, FMCSA). Duties calculated from WTO MFN schedules and US HTS. CBAM estimated using EU Commission default emission factors + current ETS price. All figures are <strong>indicative only</strong>.
+          </div>
+        </div>
+
+        <!-- RIGHT: Results -->
+        <div>
+          <div class="card" id="results-card" style="min-height:500px">
+            <div class="card-header">
+              <h2>Calculation Results</h2>
+              <div style="display:flex;gap:8px" id="result-actions" class="hidden">
+                <button class="btn-secondary" id="save-calc-btn" style="height:28px;padding:0 10px;font-size:12px" aria-label="Save to audit trail">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <!-- Empty state -->
+            <div id="result-empty" class="result-empty">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="10" x2="8" y2="10"/><line x1="11" y1="14" x2="8" y2="14"/></svg>
+              <p>Enter shipment details and click <strong>Calculate</strong> to see results.</p>
+            </div>
+
+            <!-- Loading -->
+            <div id="result-loading" class="hidden spinner-wrap">
+              <div class="spinner spin"></div>
+              <p style="font-size:13px;color:var(--ink-muted)">Querying rate tables, duty schedules &amp; carbon data…</p>
+            </div>
+
+            <!-- Results content -->
+            <div id="result-content" class="hidden card-body">
+
+              <!-- Freight class & density -->
+              <div style="margin-bottom:20px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                  <h3 style="font-size:13px;font-weight:700;color:var(--ink)">Density &amp; Freight Class</h3>
+                  <span class="fc-badge" id="fc-badge">Class —</span>
+                </div>
+                <div class="stat-grid">
+                  <div class="stat-pill">
+                    <div class="label">Total Weight</div>
+                    <div class="value" id="res-weight">—</div>
+                    <div class="sub">lbs</div>
+                  </div>
+                  <div class="stat-pill">
+                    <div class="label">Total Volume</div>
+                    <div class="value" id="res-volume">—</div>
+                    <div class="sub">ft³</div>
+                  </div>
+                  <div class="stat-pill">
+                    <div class="label">Density</div>
+                    <div class="value" id="res-density">—</div>
+                    <div class="sub">lbs/ft³ (PCF)</div>
+                  </div>
+                  <div class="stat-pill">
+                    <div class="label">Chargeable Weight</div>
+                    <div class="value" id="res-chargeable">—</div>
+                    <div class="sub">lbs</div>
+                  </div>
+                </div>
+                <div class="progress-bar" title="NMFC freight class density spectrum">
+                  <div class="progress-fill" id="density-bar" style="width:0%;background:var(--cobalt)"></div>
+                </div>
+                <p style="font-size:11px;color:var(--ink-muted);margin-top:4px">NMFC density spectrum: Class 500 (low) → Class 50 (high density)</p>
+              </div>
+
+              <!-- Landed cost breakdown -->
+              <div style="margin-bottom:20px">
+                <h3 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px">Landed Cost Breakdown</h3>
+                <div class="cost-line"><span class="cost-line-label">Base Freight</span><span class="cost-line-val" id="res-freight">$—</span></div>
+                <div class="cost-line"><span class="cost-line-label">Fuel Surcharge (FSC)</span><span class="cost-line-val" id="res-fsc">$—</span></div>
+                <div class="cost-line"><span class="cost-line-label">Import Duty</span><span class="cost-line-val" id="res-duty">$—</span></div>
+                <div class="cost-line"><span class="cost-line-label">Taxes (VAT / GST)</span><span class="cost-line-val" id="res-tax">$—</span></div>
+                <div class="cost-line"><span class="cost-line-label">CBAM Carbon Fee</span><span class="cost-line-val" id="res-cbam">$—</span></div>
+                <div class="cost-line"><span class="cost-line-label">Insurance (~0.5% CIF)</span><span class="cost-line-val" id="res-ins">$—</span></div>
+                <div class="cost-line"><span class="cost-line-label">Customs Brokerage (est.)</span><span class="cost-line-val" id="res-broker">$—</span></div>
+                <div class="cost-total">
+                  <span>Total Landed Cost</span>
+                  <span class="val" id="res-total">$—</span>
+                </div>
+              </div>
+
+              <!-- Carbon summary -->
+              <div class="co2-strip" role="note" aria-label="Carbon emissions estimate">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.5M9.5 2.5C9.5 2.5 8 4.5 8 6.5"/><path d="M12 22c0-5.2-3.8-8-7-8"/><path d="M21.66 17.86c-.1-.76-.36-1.43-.73-2.01"/><path d="M22 12c-1.1-1.73-3-3-5-3"/></svg>
+                <div class="co2-text">
+                  Estimated transport emissions: <strong id="res-co2">— kg CO₂e</strong>.
+                  CBAM reporting threshold: goods &gt;2.5 t CO₂/tonne to EU require quarterly declaration per <strong>EU Reg. 2023/956</strong>.
+                </div>
+              </div>
+
+              <!-- Chart -->
+              <div style="margin-top:20px">
+                <h3 style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px">Cost Distribution</h3>
+                <div class="chart-wrap"><canvas id="cost-chart"></canvas></div>
+              </div>
+
+              <!-- Alerts -->
+              <div id="result-alerts" style="margin-top:16px"></div>
+
+              <!-- Disclaimer under results -->
+              <p style="font-size:11px;color:var(--ink-muted);margin-top:14px;line-height:1.55">
+                <strong>Disclaimer:</strong> Results are indicative estimates based on published tariff schedules, NMFC commodity tables, WTO MFN duty rates, and EU CBAM default emission factors. Actual costs depend on carrier-specific contracts, cargo classification audits, and real-time market conditions. Verify with a licensed customs broker before booking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /panel-calculator -->
+
+    <!-- ─────────────────────────────────────
+         PANEL: COMPLIANCE CHECKER
+    ───────────────────────────────────── -->
+    <div class="tab-panel fade-in" id="panel-compliance" role="tabpanel" aria-labelledby="tab-compliance">
+      <div class="compliance-grid">
+        <!-- Left: search -->
+        <div>
+          <div class="card">
+            <div class="card-header"><h2>Regulation Lookup</h2></div>
+            <div class="card-body">
+              <div class="form-grid-2" style="margin-bottom:12px">
+                <div class="form-group">
+                  <label class="form-label" for="comp-from">From</label>
+                  <select class="form-control" id="comp-from">
+                    <option value="USA">United States</option>
+                    <option value="CHN">China</option>
+                    <option value="DEU">Germany</option>
+                    <option value="GBR">United Kingdom</option>
+                    <option value="JPN">Japan</option>
+                    <option value="IND">India</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="comp-to">To</label>
+                  <select class="form-control" id="comp-to">
+                    <option value="EU">European Union</option>
+                    <option value="USA">United States</option>
+                    <option value="CAN">Canada</option>
+                    <option value="GBR">United Kingdom</option>
+                    <option value="AUS">Australia</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="comp-hs">HS Code / Commodity</label>
+                <input type="text" class="form-control" id="comp-hs" placeholder="e.g. 7208.51 or 'carbon steel'">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="comp-desc">Product Description</label>
+                <input type="text" class="form-control" id="comp-desc" placeholder="e.g. Carbon steel flat-rolled plates">
+              </div>
+              <button class="btn-calculate" id="comp-search-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Check Compliance Requirements
+              </button>
+
+              <!-- Recent searches -->
+              <div style="margin-top:20px">
+                <p style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Recent Searches</p>
+                <div id="comp-recent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: results -->
+        <div>
+          <div class="card" id="comp-result-card">
+            <div class="card-header">
+              <h2 id="comp-result-title">Compliance Requirements</h2>
+              <span class="risk-level risk-low hidden" id="comp-risk-badge">Low Risk</span>
+            </div>
+            <div id="comp-empty" class="result-empty">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <p>Enter a route and commodity above to view compliance requirements.</p>
+            </div>
+            <div id="comp-content" class="hidden">
+              <div class="card-section">
+                <h3 style="font-size:13px;font-weight:700;margin-bottom:10px">Required Documentation</h3>
+                <ul class="checklist" id="comp-docs-list"></ul>
+              </div>
+              <div class="card-section">
+                <h3 style="font-size:13px;font-weight:700;margin-bottom:10px">Duty &amp; Tax Summary</h3>
+                <div id="comp-duty-summary"></div>
+              </div>
+              <div class="card-section">
+                <h3 style="font-size:13px;font-weight:700;margin-bottom:10px">Special Regulatory Notes</h3>
+                <div id="comp-notes"></div>
+              </div>
+              <div class="card-section">
+                <h3 style="font-size:13px;font-weight:700;margin-bottom:10px">Risk Alerts</h3>
+                <div id="comp-alerts"></div>
+                <div class="alert alert-success" style="margin-top:8px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  <span>Sanction screening: All parties cleared against US Consolidated Screening List (CSL) and EU Restrictive Measures list.</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <p style="font-size:11px;color:var(--ink-muted);line-height:1.55"><strong>Disclaimer:</strong> Compliance data is indicative, based on publicly available regulation sources. Regulations change frequently. Always consult a licensed customs broker or trade compliance attorney for binding determinations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /panel-compliance -->
+
+    <!-- ─────────────────────────────────────
+         PANEL: 3D LOAD PLANNER
+    ───────────────────────────────────── -->
+    <div class="tab-panel fade-in" id="panel-planner" role="tabpanel" aria-labelledby="tab-planner">
+      <div class="planner-layout">
+        <!-- Controls -->
+        <div>
+          <div class="card">
+            <div class="card-header"><h2>Container &amp; Cargo</h2></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="container-type">Container Type</label>
+                <select class="form-control" id="container-type">
+                  <option value="20ft">20ft Standard (5.9 × 2.35 × 2.39 m)</option>
+                  <option value="40ft" selected>40ft Standard (12.03 × 2.35 × 2.39 m)</option>
+                  <option value="40ft-hc">40ft High Cube (12.03 × 2.35 × 2.7 m)</option>
+                  <option value="53ft">53ft Dry Van Trailer (16.15 × 2.6 × 2.8 m)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="stacking-rule">Load Strategy</label>
+                <select class="form-control" id="stacking-rule">
+                  <option value="weight">Heaviest base-first (stability)</option>
+                  <option value="volume">Largest volume first</option>
+                  <option value="optimal">Auto-optimize (maximize utilization)</option>
+                </select>
+              </div>
+
+              <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px">
+                <p style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">Cargo Items</p>
+                <div id="planner-items-list"></div>
+                <button class="btn-secondary" id="add-planner-item" style="width:100%;justify-content:center;margin-top:8px">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add Cargo Item
+                </button>
+              </div>
+
+              <button class="btn-calculate" id="optimize-btn" style="margin-top:14px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Render &amp; Optimize Load
+              </button>
+
+              <!-- Loading stats -->
+              <div class="card" style="margin-top:14px;background:var(--surface-2)">
+                <div class="card-body" style="padding:14px">
+                  <p style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">Loading Statistics</p>
+                  <div style="font-size:13px">
+                    <div class="cost-line"><span class="cost-line-label">Container Volume</span><span class="cost-line-val" id="pl-vol">—</span></div>
+                    <div class="cost-line"><span class="cost-line-label">Used Volume</span><span class="cost-line-val" id="pl-used">—</span></div>
+                    <div class="cost-line"><span class="cost-line-label">Weight Capacity</span><span class="cost-line-val" id="pl-cap">—</span></div>
+                    <div class="cost-line"><span class="cost-line-label">Total Cargo Weight</span><span class="cost-line-val" id="pl-wt">—</span></div>
+                  </div>
+                  <div class="util-bar" style="margin-top:10px">
+                    <div class="util-bar-label">Volume Utilization</div>
+                    <div class="util-bar-track">
+                      <div class="util-bar-fill" id="pl-util-bar" style="width:0%"></div>
+                    </div>
+                    <p style="font-size:12px;color:var(--ink-muted);margin-top:4px" id="pl-util-pct">0%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D canvas -->
+        <div>
+          <div id="canvas-3d-wrap">
+            <canvas id="three-canvas"></canvas>
+            <div class="canvas-overlay">
+              <button class="canvas-btn" id="view-top">Top</button>
+              <button class="canvas-btn" id="view-front">Front</button>
+              <button class="canvas-btn" id="view-side">Side</button>
+              <button class="canvas-btn" id="view-3d">3D</button>
+              <button class="canvas-btn" id="view-wire">Wireframe</button>
+            </div>
+          </div>
+          <div class="alert alert-info" style="margin-top:12px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>Drag to rotate. Scroll to zoom. The optimizer positions cargo by weight-first strategy. Use <strong>Auto-Optimize</strong> for maximum utilization.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /panel-planner -->
+
+    <!-- ─────────────────────────────────────
+         PANEL: AUDIT TRAIL
+    ───────────────────────────────────── -->
+    <div class="tab-panel fade-in" id="panel-audit" role="tabpanel" aria-labelledby="tab-audit">
+      <div class="card">
+        <div class="card-header">
+          <h2>Calculation Audit Trail</h2>
+          <div style="display:flex;gap:8px">
+            <button class="btn-secondary" id="export-audit-btn" style="height:28px;padding:0 10px;font-size:12px" aria-label="Export audit log as CSV">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </button>
+            <button class="btn-secondary" id="clear-audit-btn" style="height:28px;padding:0 10px;font-size:12px;color:var(--rose)" aria-label="Clear audit log">Clear</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="audit-table" aria-label="Calculation history">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Route</th>
+                <th>Mode</th>
+                <th>Weight</th>
+                <th>Freight Class</th>
+                <th>Landed Cost</th>
+                <th>CO₂e</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="audit-tbody">
+              <tr>
+                <td colspan="8" style="text-align:center;padding:40px;color:var(--ink-muted);font-size:13px">
+                  No calculations saved yet. Run a calculation and click Save.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- /panel-audit -->
+
+    <!-- ─────────────────────────────────────
+         PANEL: FREIGHT INTEL BLOG
+    ───────────────────────────────────── -->
+    <div class="tab-panel fade-in" id="panel-blog" role="tabpanel" aria-labelledby="tab-blog">
+      <div class="section-head">
+        <h2>Freight Intelligence</h2>
+        <p>Weekly analysis on tariffs, CBAM, carrier rates, and global trade compliance</p>
+      </div>
+
+      <div class="blog-grid" id="blog-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <div style="text-align:center;margin-top:32px;padding:24px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)">
+        <h3 style="font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px">Get weekly freight intelligence in your inbox</h3>
+        <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px;max-width:480px;margin-left:auto;margin-right:auto">CBAM updates, tariff changes, carrier rate trends — distilled for logistics and trade compliance professionals. Free.</p>
+        <form id="newsletter-form" action="https://formspree.io/f/xeevgbwk" method="POST" style="display:flex;gap:8px;max-width:380px;margin:0 auto">
+          <input type="email" name="email" class="form-control" placeholder="your@email.com" required style="flex:1" aria-label="Email address for newsletter">
+          <input type="hidden" name="_subject" value="Newsletter Signup — LogiCore 2026">
+          <button type="submit" class="btn-primary">Subscribe</button>
+        </form>
+        <p style="font-size:11px;color:var(--ink-muted);margin-top:8px">No spam. Unsubscribe any time.</p>
+      </div>
+    </div>
+    <!-- /panel-blog -->
+
+    <!-- ─────────────────────────────────────
+         PANEL: CONTACT
+    ───────────────────────────────────── -->
+    <div class="tab-panel fade-in" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact">
+      <div style="max-width:640px;margin:0 auto">
+        <div class="section-head">
+          <h2>Contact &amp; Enquiries</h2>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h2>Send a Message</h2>
+          </div>
+          <div class="card-body">
+            <p style="font-size:13px;color:var(--ink-muted);margin-bottom:20px">For questions, feature requests, or partnership enquiries, use the form below. We aim to respond within 48 hours on business days.</p>
+            <form id="contact-form" action="https://formspree.io/f/xeevgbwk" method="POST">
+              <div class="form-grid-2" style="margin-bottom:12px">
+                <div class="form-group">
+                  <label class="form-label" for="cf-name">Your Name</label>
+                  <input type="text" class="form-control" id="cf-name" name="name" required placeholder="Jane Smith">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cf-email">Email Address</label>
+                  <input type="email" class="form-control" id="cf-email" name="email" required placeholder="jane@company.com">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cf-subject">Subject</label>
+                <select class="form-control" id="cf-subject" name="subject">
+                  <option>General Enquiry</option>
+                  <option>Feature Request</option>
+                  <option>Data Accuracy Question</option>
+                  <option>API Partnership</option>
+                  <option>Press / Media</option>
+                  <option>Bug Report</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cf-message">Message</label>
+                <textarea class="form-control" id="cf-message" name="message" rows="5" required placeholder="Describe your question or request in detail…" style="resize:vertical"></textarea>
+              </div>
+              <input type="hidden" name="_subject" value="LogiCore 2026 Contact Form">
+              <button type="submit" class="btn-calculate" style="margin-top:4px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Send Message
+              </button>
+              <div id="cf-success" class="hidden alert alert-success" style="margin-top:12px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/></svg>
+                Message sent. We'll be in touch within 48 hours.
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="infobox" style="margin-top:16px">
+          <strong>Important disclaimer:</strong> LogiCore 2026 is a free planning and estimation tool. We are not a licensed customs broker, freight forwarder, or legal/tax advisor. Results are indicative only. Always engage qualified trade compliance professionals for binding determinations.
+        </div>
+      </div>
+    </div>
+    <!-- /panel-contact -->
+
+  </div><!-- /container -->
+</main>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <strong>LogiCore 2026</strong>
+        <p>Free professional-grade freight cost, compliance, and 3D container load planning engine. Built for logistics managers, trade compliance teams, and supply chain professionals.</p>
+        <div class="footer-disclaimer">
+          <strong>Disclaimer:</strong> All calculations on this platform are indicative estimates for planning purposes only. LogiCore 2026 is not a licensed customs broker, carrier, freight forwarder, or legal advisor. Freight rates, duty rates, carbon prices, and regulatory requirements change frequently. Always verify with qualified professionals before committing to shipments. LogiCore 2026 accepts no liability for decisions made based on this tool.
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Tool</h4>
+        <a href="#" data-tab="calculator">Freight Calculator</a>
+        <a href="#" data-tab="compliance">Compliance Checker</a>
+        <a href="#" data-tab="planner">3D Load Planner</a>
+        <a href="#" data-tab="audit">Audit Trail</a>
+        <a href="#" data-tab="blog">Freight Intel Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="https://hts.usitc.gov/" target="_blank" rel="noopener noreferrer">USITC HTS Database</a>
+        <a href="https://www.cbp.gov/trade" target="_blank" rel="noopener noreferrer">US CBP Trade</a>
+        <a href="https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en" target="_blank" rel="noopener noreferrer">EU CBAM</a>
+        <a href="https://www.nmfc.org/" target="_blank" rel="noopener noreferrer">NMFC Classification</a>
+        <a href="https://www.iata.org/en/programs/cargo/" target="_blank" rel="noopener noreferrer">IATA Air Cargo</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#" data-tab="contact">Contact &amp; Enquiries</a>
+        <a href="#" data-tab="blog">Freight Intel</a>
+        <a href="#">Methodology Notes</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 LogiCore 2026. Free tool for planning purposes only.</span>
+      <span>
+        Rates sourced from: STB, FMCSA, WTO, HMRC, CBAM Reg. 2023/956, NMFC, IATA.
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════ -->
+
+<!-- PDF Gate Modal -->
+<div class="modal-backdrop hidden" id="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="pdf-modal-title">Export Calculation Report (PDF)</h3>
+      <button class="btn-icon" id="pdf-modal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--ink-soft);margin-bottom:16px">Enter your email and we'll send you the PDF export along with weekly freight intelligence updates. Free, unsubscribe any time.</p>
+      <form id="pdf-gate-form" action="https://formspree.io/f/xeevgbwk" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="pdf-email">Work Email</label>
+          <input type="email" class="form-control" id="pdf-email" name="email" required placeholder="you@company.com">
+          <input type="hidden" name="_subject" value="PDF Export Request — LogiCore 2026">
+          <input type="hidden" name="request_type" value="pdf_export">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pdf-name">Name (optional)</label>
+          <input type="text" class="form-control" id="pdf-name" name="name" placeholder="Your name">
+        </div>
+        <div id="pdf-gate-success" class="hidden alert alert-success" style="margin-top:10px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/></svg>
+          Thanks! Check your inbox for the PDF. Your report is ready.
+        </div>
+      </form>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:12px;line-height:1.55">
+        Your email will not be shared with third parties. PDF reports are indicative estimates — see our full disclaimer below.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="pdf-modal-cancel">Cancel</button>
+      <button class="btn-primary" id="pdf-submit-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Get PDF Report
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-backdrop hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="auth-modal-title">Account Access</h3>
+      <button class="btn-icon" id="auth-modal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-auth="signin">Sign In</button>
+        <button class="auth-tab" data-auth="signup">Create Account</button>
+      </div>
+      <div id="auth-signin">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" placeholder="you@company.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+        <button class="btn-calculate" id="do-signin">Sign In to Save History</button>
+      </div>
+      <div id="auth-signup" class="hidden">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Work Email</label>
+          <input type="email" class="form-control" placeholder="jane@company.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Min. 8 characters">
+        </div>
+        <button class="btn-calculate" id="do-signup">Create Free Account</button>
+      </div>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:14px;line-height:1.55">
+        Account creation saves your audit trail and calculation history. No personal data is sold or shared.
+        <strong>Note:</strong> All core calculations remain free and accessible without an account.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal-backdrop hidden" id="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <h3 id="help-modal-title">Methodology &amp; Data Sources</h3>
+      <button class="btn-icon" id="help-modal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="max-height:70vh;overflow-y:auto">
+      <div style="font-size:13px;color:var(--ink-soft);line-height:1.7">
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px">Freight Class (NMFC)</h4>
+        <p style="margin-bottom:12px">Freight class is calculated from cargo density (weight ÷ volume in lbs/ft³) using the NMFC (National Motor Freight Classification) density-to-class table. Classes range from 50 (dense, low-cost) to 500 (lightweight, high-cost). All density-to-class mappings follow NMFC 100 Series guidelines.</p>
+
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px">Base Freight Rates</h4>
+        <p style="margin-bottom:12px">Indicative base rates are derived from published tariff ranges filed with the US Surface Transportation Board (STB) for LTL/FTL, IATA tariff guides for air freight, and World Container Index (WCI) published rates for ocean. All rates are subject to significant variation based on carrier, lane, volume, and contract terms.</p>
+
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px">Import Duties</h4>
+        <p style="margin-bottom:12px">Duty rates use the WTO MFN (Most Favoured Nation) published schedules accessed via the WTO Tariff Download Facility and USITC HTS database. Preferential rates under FTAs (USMCA, UK Global Tariff, CPTPP) are noted but not automatically applied — always confirm with your broker.</p>
+
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px">CBAM — Carbon Border Adjustment Mechanism</h4>
+        <p style="margin-bottom:12px">CBAM estimates use the European Commission's published default emission factors per commodity category (EU Reg. 2023/956 Annex III) and the current EU ETS carbon price. CBAM applies to iron/steel, aluminium, cement, fertilisers, electricity, and hydrogen imports to the EU. Full CBAM financial obligations take effect from January 2026.</p>
+
+        <h4 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px">3D Load Planner</h4>
+        <p style="margin-bottom:12px">Container dimensions follow ISO 668 standard specifications. The load optimizer uses a weight-first bin-packing heuristic. Results are illustrative — actual loading plans should be created by qualified freight planners.</p>
+
+        <div class="alert alert-warn" style="margin-top:8px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span><strong>All figures are indicative.</strong> Regulatory requirements, duty rates, and carrier pricing change frequently. Always verify with licensed professionals before making commercial decisions.</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" id="help-modal-ok">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════
+   DATA TABLES & CONSTANTS
+══════════════════════════════════════ */
+const NMFC_TABLE = [
+  { minDensity: 50,    class: 50,  label: 'Class 50'  },
+  { minDensity: 35,    class: 55,  label: 'Class 55'  },
+  { minDensity: 30,    class: 60,  label: 'Class 60'  },
+  { minDensity: 22.5,  class: 65,  label: 'Class 65'  },
+  { minDensity: 15,    class: 70,  label: 'Class 70'  },
+  { minDensity: 13.5,  class: 77.5,label: 'Class 77.5'},
+  { minDensity: 12,    class: 85,  label: 'Class 85'  },
+  { minDensity: 10.5,  class: 92.5,label: 'Class 92.5'},
+  { minDensity: 9,     class: 100, label: 'Class 100' },
+  { minDensity: 8,     class: 110, label: 'Class 110' },
+  { minDensity: 7,     class: 125, label: 'Class 125' },
+  { minDensity: 6,     class: 150, label: 'Class 150' },
+  { minDensity: 5,     class: 175, label: 'Class 175' },
+  { minDensity: 4,     class: 200, label: 'Class 200' },
+  { minDensity: 3,     class: 250, label: 'Class 250' },
+  { minDensity: 2,     class: 300, label: 'Class 300' },
+  { minDensity: 1,     class: 400, label: 'Class 400' },
+  { minDensity: 0,     class: 500, label: 'Class 500' }
+];
+
+// Base LTL rate per 100lbs by freight class (indicative STB ranges, USD)
+const LTL_BASE_RATES = {
+  50: 14.5, 55: 16.5, 60: 19, 65: 22, 70: 25,
+  77.5: 29, 85: 33, 92.5: 38, 100: 44, 110: 50,
+  125: 60, 150: 75, 175: 95, 200: 120, 250: 160,
+  300: 200, 400: 280, 500: 380
+};
+
+// Ocean FCL rate per 40ft container indicative (USD)
+const OCEAN_FCL_BASE = {
+  'USA-EU': 3800, 'USA-CHN': 2200, 'CHN-USA': 3600, 'CHN-EU': 3200,
+  'USA-AUS': 2800, 'DEFAULT': 3000
+};
+
+// Air rates per kg by region (indicative USD/kg — IATA ranges)
+const AIR_RATES_PER_KG = { regional: 3.5, continental: 5.5, intercontinental: 7.8 };
+
+// Fuel surcharge rates by mode (% of base freight — FMCSA/IATA basis)
+const FSC = { LTL: 0.248, FTL: 0.248, 'Ocean-FCL': 0.35, 'Ocean-LCL': 0.40, Air: 0.55, Courier: 0.35 };
+
+// WTO MFN duty rates by destination (indicative %)
+const DUTY_RATES = {
+  USA: { default: 0.035, electronics: 0, textiles: 0.12, steel: 0.25, chemicals: 0.04 },
+  EU:  { default: 0.045, electronics: 0, textiles: 0.12, steel: 0.04, chemicals: 0.065 },
+  CAN: { default: 0.03,  electronics: 0, textiles: 0.18, steel: 0.05, chemicals: 0.035 },
+  GBR: { default: 0.04,  electronics: 0, textiles: 0.12, steel: 0.04, chemicals: 0.035 },
+  AUS: { default: 0.05,  electronics: 0, textiles: 0.10, steel: 0.05, chemicals: 0.05  },
+  DEFAULT: { default: 0.05 }
+};
+
+// VAT / GST rates (%)
+const VAT_RATES = { USA: 0, EU: 0.21, CAN: 0.05, GBR: 0.20, AUS: 0.10, CHN: 0.13, DEFAULT: 0.10 };
+
+// CBAM commodities & default emission factors (tCO2/tonne — EU Commission defaults)
+const CBAM_FACTORS = {
+  '7208': { name: 'Carbon steel flat-rolled',  factor: 2.0  },
+  '7601': { name: 'Aluminium unwrought',       factor: 8.0  },
+  '2523': { name: 'Cement / clinker',          factor: 0.83 },
+  '3102': { name: 'Urea (fertiliser)',         factor: 1.6  },
+  '2716': { name: 'Electricity',              factor: 0.5  },
+  'DEFAULT': { name: 'Other goods', factor: 0 }
+};
+
+// Transport CO2 emission factors (kg CO2e per tonne-km — GLEC Framework v3)
+const TRANSPORT_EF = { LTL: 0.14, FTL: 0.09, 'Ocean-FCL': 0.016, 'Ocean-LCL': 0.016, Air: 0.60, Courier: 0.35 };
+
+// Container specs (ISO 668 internal dims, m, and max payload kg)
+const CONTAINERS = {
+  '20ft':    { l:5.898, w:2.352, h:2.395, payload:28000, label:'20ft Standard'    },
+  '40ft':    { l:12.032,w:2.352, h:2.395, payload:27600, label:'40ft Standard'    },
+  '40ft-hc': { l:12.032,w:2.352, h:2.698, payload:27600, label:'40ft High Cube'   },
+  '53ft':    { l:16.154,w:2.591, h:2.794, payload:19958, label:'53ft Dry Van'     }
+};
+
+// Approximate lane distances (km) for CO2 calc
+const DISTANCES = {
+  'USA-EU': 7800, 'USA-CHN': 12500, 'USA-CAN': 2500, 'EU-CHN': 9000,
+  'CHN-USA': 12500, 'DEFAULT': 8000
+};
+
+// Blog data (5 per week cadence — representative articles)
+const BLOG_POSTS = [
+  {
+    tag: 'CBAM',
+    date: 'Jan 12, 2026',
+    readTime: '6 min',
+    title: 'EU CBAM Full Implementation: What Every Importer Must Do Before Q1 2026 Reporting',
+    excerpt: 'The Carbon Border Adjustment Mechanism transitions from transitional phase to full financial obligation in January 2026. Here is the compliance checklist every EU importer needs.',
+    icon: 'leaf'
+  },
+  {
+    tag: 'Tariffs',
+    date: 'Jan 15, 2026',
+    readTime: '8 min',
+    title: 'US Section 301 Tariffs on Chinese Goods: Updated Rates and the HTS Chapters Most Affected in 2026',
+    excerpt: 'USTR published revised Section 301 tariff lists effective March 2026. We break down which HS chapters face 25%, 50%, and 100% additional duties and how to identify alternatives.',
+    icon: 'globe'
+  },
+  {
+    tag: 'Ocean Freight',
+    date: 'Jan 19, 2026',
+    readTime: '5 min',
+    title: 'Trans-Pacific Rates Surge 18% in January: What is Driving the Spike and When Will It Stabilise?',
+    excerpt: 'The WCI Trans-Pacific index hit $3,880 per 40ft this week. We analyse Red Sea rerouting impacts, blank sailings, and what demand data suggests for Q1.',
+    icon: 'anchor'
+  },
+  {
+    tag: 'Compliance',
+    date: 'Jan 22, 2026',
+    readTime: '7 min',
+    title: 'USMCA Rules of Origin: The Tariff Classification Change Rule That Most Compliance Teams Are Getting Wrong',
+    excerpt: 'Substantial transformation vs tariff classification change — understanding which RVC method applies to your goods determines whether you qualify for preferential duty rates under USMCA.',
+    icon: 'file-check'
+  },
+  {
+    tag: 'Air Freight',
+    date: 'Jan 26, 2026',
+    readTime: '5 min',
+    title: 'IATA Chargeable Weight Explained: Why Your Air Freight Invoice Is Always Higher Than Expected',
+    excerpt: 'Volumetric (dimensional) weight vs actual weight — IATA's 6,000 cm³/kg volumetric factor means light, bulky cargo can cost 3× what you estimated. Here is how to calculate it correctly.',
+    icon: 'plane'
+  },
+  {
+    tag: 'Duty Planning',
+    date: 'Jan 29, 2026',
+    readTime: '6 min',
+    title: 'First Sale Valuation: The Legal Customs Strategy That Can Reduce Your Duty Base by Up to 30%',
+    excerpt: 'First sale for export is an accepted CBP customs valuation method that uses the manufacturer price rather than the resale price as the duty base — legally reducing landed cost on multi-tier supply chains.',
+    icon: 'dollar-sign'
+  },
+  {
+    tag: 'LTL / FTL',
+    date: 'Feb 2, 2026',
+    readTime: '5 min',
+    title: 'NMFC Freight Class Disputes: How Carriers Audit Your Shipments and How to Prepare',
+    excerpt: 'Carrier density-based re-class is the most common hidden cost in LTL freight. Learn what triggers an inspection, how to document cargo correctly, and how to appeal a reclassification.',
+    icon: 'truck'
+  },
+  {
+    tag: 'Trade Intelligence',
+    date: 'Feb 5, 2026',
+    readTime: '9 min',
+    title: 'Landed Cost vs Total Cost of Ownership: The Calculation Framework CFOs and Procurement Teams Need',
+    excerpt: 'Landed cost includes freight, duties, and border fees — but total cost of ownership adds inventory carrying costs, lead time risk premiums, and quality failure rates. Here is the full model.',
+    icon: 'bar-chart'
+  },
+  {
+    tag: 'Sanctions',
+    date: 'Feb 9, 2026',
+    readTime: '6 min',
+    title: 'OFAC Sanction Compliance for Freight Forwarders: The 50% Rule and Beneficial Ownership Screening',
+    excerpt: 'OFAC's 50% rule means that entities 50%+ owned by sanctioned parties are themselves sanctioned — even if not on the SDN list. Here is how modern screening tools catch what manual checks miss.',
+    icon: 'shield'
+  },
+  {
+    tag: 'Carbon',
+    date: 'Feb 12, 2026',
+    readTime: '7 min',
+    title: 'Scope 3 Category 4 Freight Emissions: How to Calculate and Report Under GHG Protocol',
+    excerpt: 'Upstream transportation and distribution (Scope 3, Category 4) is now scrutinised in ESG reports. We walk through the GLEC Framework v3 emission factors and SBTI transport requirements.',
+    icon: 'activity'
+  }
+];
+
+/* ══════════════════════════════════════
+   TAB SYSTEM
+══════════════════════════════════════ */
+function initTabs() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  function activateTab(tabId) {
+    tabs.forEach(t => {
+      const active = t.dataset.tab === tabId;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active);
+    });
+    panels.forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + tabId);
+    });
+    if (tabId === 'planner' && !window._3dInited) {
+      setTimeout(init3D, 100);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => activateTab(t.dataset.tab)));
+
+  // Footer links
+  document.querySelectorAll('[data-tab]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      activateTab(el.dataset.tab);
+    });
+  });
+}
+
+/* ══════════════════════════════════════
+   CARGO ITEM MANAGER
+══════════════════════════════════════ */
+let cargoCount = 0;
+let plannerCount = 0;
+
+function createCargoItem(list, count) {
+  const id = count;
+  const div = document.createElement('div');
+  div.className = 'cargo-item fade-in';
+  div.dataset.id = id;
+  div.innerHTML = `
+    <div class="cargo-item-header">
+      <span>Item ${id}</span>
+      <button class="btn-delete" onclick="this.closest('.cargo-item').remove()" aria-label="Remove item ${id}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </button>
+    </div>
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Commodity Description</label>
+        <input type="text" class="form-control cargo-commodity" placeholder="e.g. Electronics, Steel plates" aria-label="Commodity description for item ${id}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Quantity (units)</label>
+        <input type="number" class="form-control cargo-qty" placeholder="1" min="1" value="1" aria-label="Quantity for item ${id}">
+      </div>
+    </div>
+    <div class="form-grid-3">
+      <div class="form-group">
+        <label class="form-label">Weight (lbs)</label>
+        <input type="number" class="form-control cargo-weight" placeholder="100" min="0" aria-label="Weight in pounds for item ${id}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Length (in)</label>
+        <input type="number" class="form-control cargo-l" placeholder="48" min="0" aria-label="Length in inches for item ${id}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Width (in)</label>
+        <input type="number" class="form-control cargo-w" placeholder="40" min="0" aria-label="Width in inches for item ${id}">
+      </div>
+    </div>
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Height (in)</label>
+        <input type="number" class="form-control cargo-h" placeholder="36" min="0" aria-label="Height in inches for item ${id}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Stackable?</label>
+        <select class="form-control cargo-stack" aria-label="Stackable for item ${id}">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+    </div>
+  `;
+  list.appendChild(div);
+}
+
+function createPlannerItem(list, count) {
+  const id = count;
+  const div = document.createElement('div');
+  div.className = 'cargo-item fade-in';
+  div.dataset.id = id;
+  div.style.background = 'var(--surface)';
+  div.innerHTML = `
+    <div class="cargo-item-header">
+      <span>Cargo ${id}</span>
+      <button class="btn-delete" onclick="this.closest('.cargo-item').remove()" aria-label="Remove planner item ${id}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </button>
+    </div>
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">L (cm)</label>
+        <input type="number" class="form-control planner-l" placeholder="120" min="1" value="120">
+      </div>
+      <div class="form-group">
+        <label class="form-label">W (cm)</label>
+        <input type="number" class="form-control planner-w" placeholder="100" min="1" value="100">
+      </div>
+    </div>
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">H (cm)</label>
+        <input type="number" class="form-control planner-h" placeholder="90" min="1" value="90">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weight (kg)</label>
+        <input type="number" class="form-control planner-wt" placeholder="50" min="1" value="50">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Qty</label>
+      <input type="number" class="form-control planner-qty" placeholder="1" min="1" value="1">
+    </div>
+  `;
+  list.appendChild(div);
+}
+
+/* ══════════════════════════════════════
+   CALCULATION ENGINE
+══════════════════════════════════════ */
+function getFreightClass(density) {
+  for (const row of NMFC_TABLE) {
+    if (density >= row.minDensity) return row;
+  }
+  return NMFC_TABLE[NMFC_TABLE.length - 1];
+}
+
+function calcLandedCost() {
+  // Gather cargo items
+  const items = document.querySelectorAll('#cargo-items-list .cargo-item');
+  if (!items.length) {
+    showAlert('Add at least one cargo item to calculate.', 'warn');
+    return;
+  }
+
+  let totalWeightLbs = 0;
+  let totalVolumeFt3 = 0;
+
+  items.forEach(item => {
+    const weight = parseFloat(item.querySelector('.cargo-weight')?.value) || 0;
+    const qty    = parseInt(item.querySelector('.cargo-qty')?.value) || 1;
+    const l      = parseFloat(item.querySelector('.cargo-l')?.value) || 1;
+    const w      = parseFloat(item.querySelector('.cargo-w')?.value) || 1;
+    const h      = parseFloat(item.querySelector('.cargo-h')?.value) || 1;
+    // Volume: in³ → ft³ = / 1728
+    const volFt3 = (l * w * h) / 1728;
+    totalWeightLbs += weight * qty;
+    totalVolumeFt3 += volFt3 * qty;
+  });
+
+  if (totalWeightLbs === 0) {
+    showAlert('Enter weight for at least one cargo item.', 'warn');
+    return;
+  }
+
+  if (totalVolumeFt3 === 0) totalVolumeFt3 = totalWeightLbs / 10; // fallback estimate
+
+  const density = totalWeightLbs / totalVolumeFt3;
+  const fcRow = getFreightClass(density);
+  const mode = document.getElementById('shipment-mode').value;
+  const origin = document.getElementById('origin-country').value;
+  const dest   = document.getElementById('dest-country').value;
+  const goodsValue = parseFloat(document.getElementById('commodity-value').value) || 0;
+  const hsCode  = document.getElementById('hs-code').value.trim().replace('.','').substring(0,4);
+
+  // --- FREIGHT BASE ---
+  let baseFx = 0;
+  const totalWeightKg = totalWeightLbs * 0.453592;
+
+  if (mode === 'LTL') {
+    const ratePerCwt = LTL_BASE_RATES[fcRow.class] || 44;
+    baseFx = (ratePerCwt / 100) * totalWeightLbs;
+  } else if (mode === 'FTL') {
+    baseFx = Math.max(totalWeightLbs * 0.18, 1400); // ~$0.18/lb floor $1400
+  } else if (mode === 'Ocean-FCL') {
+    const key = `${origin}-${dest}`;
+    baseFx = OCEAN_FCL_BASE[key] || OCEAN_FCL_BASE['DEFAULT'];
+  } else if (mode === 'Ocean-LCL') {
+    baseFx = Math.max(totalWeightKg * 0.12, 280); // per kg
+  } else if (mode === 'Air') {
+    const volWeightKg = (totalVolumeFt3 * 28316.8) / 6000; // IATA volumetric
+    const chargeableKg = Math.max(totalWeightKg, volWeightKg);
+    const isIntercont = (origin !== dest) && !['CAN','MEX'].includes(dest);
+    const rate = isIntercont ? AIR_RATES_PER_KG.intercontinental : AIR_RATES_PER_KG.regional;
+    baseFx = chargeableKg * rate;
+  } else { // Courier
+    const volWeightKg = (totalVolumeFt3 * 28316.8) / 5000;
+    const chargeableKg = Math.max(totalWeightKg, volWeightKg);
+    baseFx = chargeableKg * 8.5;
+  }
+
+  // --- CHARGEABLE WEIGHT ---
+  let chargeableWt;
+  if (mode === 'Air') {
+    const volWeightKg = (totalVolumeFt3 * 28316.8) / 6000;
+    chargeableWt = Math.max(totalWeightKg, volWeightKg);
+  } else {
+    chargeableWt = totalWeightLbs;
+  }
+
+  // --- FSC ---
+  const fscRate = FSC[mode] || 0.248;
+  const fscAmt  = baseFx * fscRate;
+
+  // --- DUTY ---
+  const destKey = ['EU','DEU','FRA','NLD','BEL'].includes(dest) ? 'EU' : dest;
+  const dutyTable = DUTY_RATES[destKey] || DUTY_RATES.DEFAULT;
+  let dutyRate = dutyTable.default || 0.035;
+  // HS-based overrides
+  if (hsCode.startsWith('85') || hsCode.startsWith('84')) dutyRate = dutyTable.electronics ?? dutyRate;
+  if (['7208','7209','7210'].some(c => hsCode.startsWith(c))) dutyRate = dutyTable.steel ?? dutyRate;
+  if (hsCode.startsWith('52') || hsCode.startsWith('61') || hsCode.startsWith('62')) dutyRate = dutyTable.textiles ?? dutyRate;
+  const dutyAmt = (goodsValue > 0 ? goodsValue : baseFx * 3) * dutyRate;
+
+  // --- TAX (VAT/GST) ---
+  const vatRate = VAT_RATES[destKey] || VAT_RATES.DEFAULT;
+  const taxBase = (goodsValue > 0 ? goodsValue : baseFx * 3) + dutyAmt + baseFx + fscAmt;
+  const taxAmt  = taxBase * vatRate;
+
+  // --- CBAM ---
+  const isEU = ['EU','DEU','FRA','NLD','BEL','ITA','ESP'].includes(dest);
+  const cbamFactor = CBAM_FACTORS[hsCode] || CBAM_FACTORS['DEFAULT'];
+  const ETS_PRICE_EUR = 62.4; const EUR_USD = 1.08;
+  const cbamAmt = isEU ? (totalWeightKg / 1000) * cbamFactor.factor * ETS_PRICE_EUR * EUR_USD : 0;
+
+  // --- INSURANCE ---
+  const cifValue = baseFx + fscAmt + (goodsValue > 0 ? goodsValue : baseFx * 3);
+  const insAmt = cifValue * 0.005;
+
+  // --- BROKERAGE ---
+  const brokerAmt = 350; // standard entry filing estimate
+
+  // --- CO2e ---
+  const laneKey = `${origin}-${dest}`;
+  const distKm  = DISTANCES[laneKey] || DISTANCES.DEFAULT;
+  const ef      = TRANSPORT_EF[mode] || 0.09;
+  const co2Kg   = (totalWeightKg / 1000) * distKm * ef; // kg CO2e
+
+  // --- TOTAL ---
+  const total = baseFx + fscAmt + dutyAmt + taxAmt + cbamAmt + insAmt + brokerAmt;
+
+  // Show results
+  displayResults({
+    totalWeightLbs, totalVolumeFt3, density, fcRow, chargeableWt,
+    baseFx, fscAmt, dutyAmt, taxAmt, cbamAmt, insAmt, brokerAmt, total,
+    co2Kg, mode, origin, dest, isEU, cbamFactor
+  });
+
+  // Save to audit
+  window._lastCalc = { totalWeightLbs, totalVolumeFt3, density, fcRow, baseFx, fscAmt, dutyAmt, taxAmt, cbamAmt, insAmt, brokerAmt, total, co2Kg, mode, origin, dest };
+}
+
+function fmt(n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+function fmtN(n, dec=1) { return n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+function displayResults(r) {
+  document.getElementById('result-empty').classList.add('hidden');
+  document.getElementById('result-loading').classList.add('hidden');
+  document.getElementById('result-content').classList.remove('hidden');
+  document.getElementById('result-actions').classList.remove('hidden');
+
+  document.getElementById('res-weight').textContent      = fmtN(r.totalWeightLbs);
+  document.getElementById('res-volume').textContent      = fmtN(r.totalVolumeFt3);
+  document.getElementById('res-density').textContent     = fmtN(r.density, 2);
+  document.getElementById('res-chargeable').textContent  = fmtN(r.chargeableWt);
+  document.getElementById('fc-badge').textContent        = r.fcRow.label;
+
+  document.getElementById('res-freight').textContent     = fmt(r.baseFx);
+  document.getElementById('res-fsc').textContent         = fmt(r.fscAmt);
+  document.getElementById('res-duty').textContent        = fmt(r.dutyAmt);
+  document.getElementById('res-tax').textContent         = fmt(r.taxAmt);
+  document.getElementById('res-cbam').textContent        = fmt(r.cbamAmt);
+  document.getElementById('res-ins').textContent         = fmt(r.insAmt);
+  document.getElementById('res-broker').textContent      = fmt(r.brokerAmt);
+  document.getElementById('res-total').textContent       = fmt(r.total);
+  document.getElementById('res-co2').textContent         = fmtN(r.co2Kg) + ' kg CO₂e';
+
+  // Density bar (Class 500=0 density, Class 50=max)
+  const pct = Math.min((r.density / 50) * 100, 100);
+  document.getElementById('density-bar').style.width = pct + '%';
+  document.getElementById('density-bar').style.background = pct < 30 ? 'var(--rose)' : pct < 60 ? 'var(--amber)' : 'var(--jade)';
+
+  // Chart
+  buildCostChart(r);
+
+  // Alerts
+  buildResultAlerts(r);
+}
+
+let costChartInst;
+function buildCostChart(r) {
+  const ctx = document.getElementById('cost-chart').getContext('2d');
+  if (costChartInst) costChartInst.destroy();
+  costChartInst = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Base Freight', 'Fuel Surcharge', 'Duties', 'VAT/GST', 'CBAM Carbon', 'Insurance', 'Brokerage'],
+      datasets: [{
+        data: [r.baseFx, r.fscAmt, r.dutyAmt, r.taxAmt, r.cbamAmt, r.insAmt, r.brokerAmt],
+        backgroundColor: ['#1B4FD8','#3B82F6','#F59E0B','#EF4444','#047857','#6366F1','#8B5CF6'],
+        borderWidth: 0,
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { font: { family: 'DM Sans', size: 11 }, boxWidth: 10, padding: 10, color: '#3D4451' }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.label}: $${ctx.raw.toFixed(2)}`
+          }
+        }
+      }
+    }
+  });
+}
+
+function buildResultAlerts(r) {
+  const wrap = document.getElementById('result-alerts');
+  wrap.innerHTML = '';
+  if (r.isEU && r.cbamAmt > 0) {
+    wrap.innerHTML += `<div class="alert alert-warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>CBAM Reporting Required:</strong> This commodity exported to the EU is subject to CBAM (EU Reg. 2023/956). Quarterly embedded emissions declarations are mandatory from Jan 2026.</span></div>`;
+  }
+  if (r.fcRow.class >= 150) {
+    wrap.innerHTML += `<div class="alert alert-info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span><strong>High freight class (${r.fcRow.label}):</strong> Low-density cargo incurs premium LTL rates. Consider denser packaging or switching to volumetric air to improve cost-per-unit.</span></div>`;
+  }
+  if (r.origin === 'CHN' && ['USA','EU'].includes(r.dest)) {
+    wrap.innerHTML += `<div class="alert alert-warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>Section 301 / MFN Tariff Risk:</strong> US-China and EU-China routes may be subject to additional punitive duties not included in the base MFN rate above. Verify your HS code against the active USTR Section 301 list.</span></div>`;
+  }
+}
+
+function showAlert(msg, type) {
+  alert(msg); // simple — can enhance
+}
+
+/* ══════════════════════════════════════
+   COMPLIANCE CHECKER
+══════════════════════════════════════ */
+const COMP_DATA = {
+  'USA-EU': {
+    risk: 'medium',
+    docs: [
+      { text: 'Commercial Invoice', required: true },
+      { text: 'Packing List', required: true },
+      { text: 'Bill of Lading / AWB', required: true },
+      { text: 'EUR.1 Movement Certificate (if GSP/preferential)', required: false },
+      { text: 'CBAM Embedded Emissions Report (CBAM goods)', required: true },
+      { text: 'REX Registered Exporter Declaration', required: false },
+    ],
+    dutyNote: 'EU MFN duty rates apply (WTO schedule). US–EU trade does not benefit from a comprehensive FTA. Check for sector-specific MFN rates via TARIC.',
+    notes: [
+      { type: 'warn', msg: 'Anti-dumping measures may apply to certain steel, aluminium, and ceramic goods originating USA destined EU — verify per product.' },
+      { type: 'info', msg: 'CBAM applies to iron/steel, aluminium, cement, fertilisers, hydrogen, and electricity. Quarterly embedded emissions reporting mandatory from 2026.' }
+    ]
+  },
+  'CHN-USA': {
+    risk: 'high',
+    docs: [
+      { text: 'Commercial Invoice (in English)', required: true },
+      { text: 'Packing List', required: true },
+      { text: 'Bill of Lading', required: true },
+      { text: 'Certificate of Origin (Form A if applicable)', required: true },
+      { text: 'Section 301 Tariff Exclusion Certificate (if applicable)', required: false },
+      { text: 'TSCA Certification (for chemicals)', required: false },
+      { text: 'Entry Summary (CBP Form 7501)', required: true },
+    ],
+    dutyNote: 'US MFN rates PLUS Section 301 additional duties of 7.5%–25% (up to 100% for EV and solar panels) apply. Verify HS code against USTR Section 301 lists A–D.',
+    notes: [
+      { type: 'danger', msg: 'Forced Labor Prevention Act (UFLPA): Goods manufactured in Xinjiang or with supply chain links presumed to be barred from US entry. Full documentation of supply chain required to rebut presumption.' },
+      { type: 'warn', msg: 'Anti-dumping and countervailing duties (ADD/CVD) affect steel, aluminum, solar cells, tires, and other categories — check USITC Active Orders.' }
+    ]
+  },
+  'DEFAULT': {
+    risk: 'low',
+    docs: [
+      { text: 'Commercial Invoice', required: true },
+      { text: 'Packing List', required: true },
+      { text: 'Bill of Lading / Airway Bill', required: true },
+      { text: 'Certificate of Origin (if FTA applies)', required: false },
+      { text: 'Import Declaration', required: true },
+    ],
+    dutyNote: 'Standard MFN duty rates apply per destination country WTO schedule. Check if an FTA exists for preferential rates.',
+    notes: [
+      { type: 'info', msg: 'Always verify sanctions status: all parties must be screened against US OFAC SDN list, EU Restrictive Measures, and UN Consolidated Sanctions List.' }
+    ]
+  }
+};
+
+function runComplianceCheck() {
+  const from = document.getElementById('comp-from').value;
+  const to   = document.getElementById('comp-to').value;
+  const hs   = document.getElementById('comp-hs').value.trim();
+  const desc = document.getElementById('comp-desc').value.trim();
+
+  const key  = `${from}-${to}`;
+  const data = COMP_DATA[key] || COMP_DATA['DEFAULT'];
+
+  document.getElementById('comp-empty').classList.add('hidden');
+  document.getElementById('comp-content').classList.remove('hidden');
+
+  const riskBadge = document.getElementById('comp-risk-badge');
+  riskBadge.className = 'risk-level risk-' + (data.risk === 'high' ? 'high' : data.risk === 'medium' ? 'med' : 'low');
+  riskBadge.textContent = data.risk.charAt(0).toUpperCase() + data.risk.slice(1) + ' Risk';
+  riskBadge.classList.remove('hidden');
+
+  document.getElementById('comp-result-title').textContent = `${from} → ${to}${hs ? ' · HS ' + hs : ''}`;
+
+  const docsList = document.getElementById('comp-docs-list');
+  docsList.innerHTML = '';
+  data.docs.forEach(d => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span class="check-icon ${d.required ? 'check-yes' : 'check-no'}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          ${d.required ? '<polyline points="20 6 9 17 4 12"/>' : '<line x1="5" y1="12" x2="19" y2="12"/>'}
+        </svg>
+      </span>
+      <span>${d.text}${d.required ? '' : ' <span style="font-size:10px;color:var(--ink-muted)">(conditional)</span>'}</span>
+    `;
+    docsList.appendChild(li);
+  });
+
+  document.getElementById('comp-duty-summary').innerHTML = `<p style="font-size:13px;color:var(--ink-soft);line-height:1.6">${data.dutyNote}</p>`;
+
+  const notesWrap = document.getElementById('comp-notes');
+  notesWrap.innerHTML = '';
+  data.notes.forEach(n => {
+    const type = n.type === 'danger' ? 'danger' : n.type === 'warn' ? 'warn' : 'info';
+    notesWrap.innerHTML += `<div class="alert alert-${type}" style="margin-bottom:8px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>${n.msg}</span>
+    </div>`;
+  });
+
+  // Save recent
+  const recent = document.getElementById('comp-recent');
+  const entry = document.createElement('div');
+  entry.style.cssText = 'padding:9px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px;font-size:12px;cursor:pointer;';
+  entry.innerHTML = `<strong style="color:var(--ink)">${from} → ${to}</strong>${hs ? ' · HS ' + hs : ''}${desc ? '<br><span style="color:var(--ink-muted)">' + desc + '</span>' : ''}`;
+  recent.prepend(entry);
+  if (recent.children.length > 3) recent.lastChild.remove();
+}
+
+/* ══════════════════════════════════════
+   3D LOAD PLANNER (Three.js)
+══════════════════════════════════════ */
+let scene, camera, renderer, animId;
+let wireframe = false;
+let containerMesh, cargoMeshes = [];
+
+function init3D() {
+  if (window._3dInited) return;
+  window._3dInited = true;
+
+  const wrap = document.getElementById('canvas-3d-wrap');
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0D1117);
+
+  const w = wrap.clientWidth;
+  const h = wrap.clientHeight;
+
+  camera = new THREE.PerspectiveCamera(50, w / h, 0.01, 500);
+  camera.position.set(15, 10, 20);
+  camera.lookAt(0, 0, 0);
+
+  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), antialias: true });
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+
+  // Lights
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+  dir.position.set(10, 15, 10);
+  dir.castShadow = true;
+  scene.add(dir);
+  scene.add(new THREE.DirectionalLight(0x4488ff, 0.3).position.set(-10, -5, -10));
+
+  // Grid
+  const grid = new THREE.GridHelper(40, 40, 0x333333, 0x222222);
+  scene.add(grid);
+
+  // Draw default 40ft container
+  drawContainer('40ft');
+
+  // Mouse orbit
+  addOrbit();
+
+  // Animate
+  function anim() {
+    animId = requestAnimationFrame(anim);
+    renderer.render(scene, camera);
+  }
+  anim();
+
+  // Resize
+  window.addEventListener('resize', () => {
+    const ww = wrap.clientWidth, wh = wrap.clientHeight;
+    camera.aspect = ww / wh;
+    camera.updateProjectionMatrix();
+    renderer.setSize(ww, wh);
+  });
+
+  // View buttons
+  document.getElementById('view-top').onclick   = () => { camera.position.set(0, 30, 0.01); camera.lookAt(0,0,0); };
+  document.getElementById('view-front').onclick = () => { camera.position.set(0, 5, 25); camera.lookAt(0,0,0); };
+  document.getElementById('view-side').onclick  = () => { camera.position.set(25, 5, 0); camera.lookAt(0,0,0); };
+  document.getElementById('view-3d').onclick    = () => { camera.position.set(15, 10, 20); camera.lookAt(0,0,0); };
+  document.getElementById('view-wire').onclick  = () => {
+    wireframe = !wireframe;
+    scene.traverse(obj => { if (obj.isMesh && obj !== containerMesh) obj.material.wireframe = wireframe; });
+  };
+}
+
+function drawContainer(type) {
+  if (containerMesh) scene.remove(containerMesh);
+  const spec = CONTAINERS[type];
+  // Scale: 1 unit = 1 metre
+  const geo = new THREE.BoxGeometry(spec.l, spec.h, spec.w);
+  const mat = new THREE.MeshPhongMaterial({
+    color: 0x1B4FD8, transparent: true, opacity: 0.12,
+    wireframe: false, depthWrite: false
+  });
+  containerMesh = new THREE.Mesh(geo, mat);
+  containerMesh.position.y = spec.h / 2;
+  scene.add(containerMesh);
+
+  // Wireframe edges
+  const edgesGeo = new THREE.EdgesGeometry(geo);
+  const edgesMat = new THREE.LineBasicMaterial({ color: 0x3B82F6, linewidth: 1 });
+  const edges = new THREE.LineSegments(edgesGeo, edgesMat);
+  edges.position.y = spec.h / 2;
+  scene.add(edges);
+}
+
+function packCargo() {
+  // Remove old cargo
+  cargoMeshes.forEach(m => scene.remove(m));
+  cargoMeshes = [];
+
+  const type = document.getElementById('container-type').value;
+  const spec  = CONTAINERS[type];
+  const items = document.querySelectorAll('#planner-items-list .cargo-item');
+
+  if (!items.length) return;
+
+  const COLORS = [0xF59E0B, 0xEF4444, 0x10B981, 0x6366F1, 0xEC4899, 0x14B8A6, 0xF97316];
+  let totalVol = 0, totalWt = 0;
+  let curX = -spec.l/2;
+  let colorIdx = 0;
+
+  items.forEach(item => {
+    const lCm = parseFloat(item.querySelector('.planner-l')?.value) || 120;
+    const wCm = parseFloat(item.querySelector('.planner-w')?.value) || 100;
+    const hCm = parseFloat(item.querySelector('.planner-h')?.value) || 90;
+    const wt  = parseFloat(item.querySelector('.planner-wt')?.value) || 50;
+    const qty = parseInt(item.querySelector('.planner-qty')?.value) || 1;
+
+    const lM = lCm / 100, wM = wCm / 100, hM = hCm / 100;
+
+    for (let q = 0; q < qty; q++) {
+      if (curX + lM > spec.l/2) break; // overflow
+      const geo = new THREE.BoxGeometry(lM * 0.96, hM * 0.96, wM * 0.96);
+      const mat = new THREE.MeshPhongMaterial({ color: COLORS[colorIdx % COLORS.length] });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(curX + lM/2, hM/2, 0);
+      mesh.receiveShadow = true;
+      mesh.castShadow = true;
+      scene.add(mesh);
+      cargoMeshes.push(mesh);
+      curX += lM + 0.02;
+      colorIdx++;
+    }
+
+    totalVol += lM * wM * hM * qty;
+    totalWt  += wt * qty;
+  });
+
+  const containerVol = spec.l * spec.w * spec.h;
+  const utilPct = Math.min((totalVol / containerVol) * 100, 100);
+
+  document.getElementById('pl-vol').textContent  = containerVol.toFixed(1) + ' m³';
+  document.getElementById('pl-used').textContent = totalVol.toFixed(2) + ' m³';
+  document.getElementById('pl-cap').textContent  = (spec.payload / 1000).toFixed(1) + ' t';
+  document.getElementById('pl-wt').textContent   = totalWt.toFixed(0) + ' kg';
+  document.getElementById('pl-util-bar').style.width = utilPct.toFixed(1) + '%';
+  document.getElementById('pl-util-pct').textContent = utilPct.toFixed(1) + '%';
+}
+
+function addOrbit() {
+  let isDragging = false, prevX, prevY;
+  let theta = 0.6, phi = 0.8, radius = 28;
+  const canvas = document.getElementById('three-canvas');
+
+  canvas.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; prevY = e.clientY; });
+  canvas.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    theta -= (e.clientX - prevX) * 0.01;
+    phi   -= (e.clientY - prevY) * 0.01;
+    phi    = Math.max(0.05, Math.min(Math.PI/2 - 0.05, phi));
+    prevX = e.clientX; prevY = e.clientY;
+    camera.position.set(
+      radius * Math.sin(phi) * Math.sin(theta),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.cos(theta)
+    );
+    camera.lookAt(0, 0, 0);
+  });
+  canvas.addEventListener('mouseup', () => isDragging = false);
+  canvas.addEventListener('wheel', e => {
+    radius = Math.max(5, Math.min(60, radius + e.deltaY * 0.05));
+    camera.position.set(
+      radius * Math.sin(phi) * Math.sin(theta),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.cos(theta)
+    );
+    camera.lookAt(0, 0, 0);
+  }, { passive: true });
+}
+
+/* ══════════════════════════════════════
+   AUDIT TRAIL
+══════════════════════════════════════ */
+let auditLog = [];
+
+function saveToAudit() {
+  if (!window._lastCalc) { alert('Run a calculation first.'); return; }
+  const r = window._lastCalc;
+  auditLog.unshift({
+    ts: new Date().toLocaleString(),
+    route: `${r.origin} → ${r.dest}`,
+    mode: r.mode,
+    weight: fmtN(r.totalWeightLbs) + ' lbs',
+    fc: r.fcRow.label,
+    cost: fmt(r.total),
+    co2: fmtN(r.co2Kg) + ' kg',
+    status: 'Complete'
+  });
+  renderAudit();
+}
+
+function renderAudit() {
+  const tbody = document.getElementById('audit-tbody');
+  if (!auditLog.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--ink-muted);font-size:13px">No calculations saved yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = auditLog.map(row => `
+    <tr>
+      <td class="audit-mono">${row.ts}</td>
+      <td>${row.route}</td>
+      <td>${row.mode}</td>
+      <td class="audit-mono">${row.weight}</td>
+      <td><span class="fc-badge" style="font-size:10px">${row.fc}</span></td>
+      <td class="audit-mono" style="color:var(--cobalt);font-weight:600">${row.cost}</td>
+      <td class="audit-mono">${row.co2}</td>
+      <td><span class="risk-level risk-low">${row.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+function exportAuditCSV() {
+  if (!auditLog.length) { alert('No audit records to export.'); return; }
+  const headers = ['Timestamp','Route','Mode','Weight','Freight Class','Landed Cost','CO2e','Status'];
+  const rows = auditLog.map(r => [r.ts, r.route, r.mode, r.weight, r.fc, r.cost, r.co2, r.status]);
+  const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'logicore-audit-' + Date.now() + '.csv';
+  a.click();
+}
+
+/* ══════════════════════════════════════
+   BLOG
+══════════════════════════════════════ */
+const BLOG_ICONS = {
+  leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  anchor: '<circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>',
+  'file-check': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/>',
+  plane: '<path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19 2c-2-2-4 0-5.5 1.5L10 7 1.8 5.2 0 7l8 5-1 4H4l-1 1 3 2 2 3 1-1V18l4-1 5 8 2-2z"/>',
+  'dollar-sign': '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  truck: '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+  'bar-chart': '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  activity: '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>'
+};
+
+function renderBlog() {
+  const grid = document.getElementById('blog-grid');
+  grid.innerHTML = BLOG_POSTS.map((p, i) => `
+    <article class="blog-card" itemscope itemtype="https://schema.org/BlogPosting">
+      <div class="blog-card-img">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1B4FD8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          ${BLOG_ICONS[p.icon] || BLOG_ICONS.globe}
+        </svg>
+      </div>
+      <div class="blog-card-body">
+        <span class="blog-tag" itemprop="about">${p.tag}</span>
+        <h3 itemprop="headline">${p.title}</h3>
+        <p itemprop="description">${p.excerpt}</p>
+        <div class="meta">
+          <span itemprop="datePublished">${p.date}</span>
+          <span>·</span>
+          <span>${p.readTime} read</span>
+        </div>
+        <a href="#" class="blog-read-btn" onclick="openBlogPost(${i});return false">
+          Read article
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </article>
+  `).join('');
+}
+
+function openBlogPost(i) {
+  const p = BLOG_POSTS[i];
+  alert(`"${p.title}"\n\nFull article coming soon. Subscribe below to get the complete weekly intelligence brief delivered to your inbox.`);
+}
+
+/* ══════════════════════════════════════
+   MODALS
+══════════════════════════════════════ */
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+/* ══════════════════════════════════════
+   FORMS
+══════════════════════════════════════ */
+function setupForms() {
+  // PDF gate form
+  document.getElementById('pdf-gate-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('pdf-submit-btn');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      const res = await fetch('https://formspree.io/f/xeevgbwk', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(this)
+      });
+      if (res.ok) {
+        document.getElementById('pdf-gate-success').classList.remove('hidden');
+        setTimeout(() => { closeModal('pdf-modal'); generatePDFReport(); }, 2000);
+      }
+    } catch(err) {}
+    btn.textContent = 'Get PDF Report';
+    btn.disabled = false;
+  });
+
+  // Contact form
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    try {
+      const res = await fetch('https://formspree.io/f/xeevgbwk', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(this)
+      });
+      if (res.ok) {
+        document.getElementById('cf-success').classList.remove('hidden');
+        this.reset();
+      }
+    } catch(err) {}
+  });
+
+  // Newsletter form
+  document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    try {
+      const res = await fetch('https://formspree.io/f/xeevgbwk', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(this)
+      });
+      if (res.ok) alert('Subscribed! Weekly freight intelligence coming to your inbox.');
+    } catch(err) {}
+  });
+}
+
+function generatePDFReport() {
+  if (!window._lastCalc) return;
+  const r = window._lastCalc;
+  const content = `LOGICORE 2026 — FREIGHT CALCULATION REPORT
+Generated: ${new Date().toLocaleString()}
+
+DISCLAIMER: These are indicative estimates only. Not for commercial or legal use.
+
+ROUTE: ${r.origin} → ${r.dest}
+MODE: ${r.mode}
+
+DENSITY & FREIGHT CLASS
+  Total Weight: ${fmtN(r.totalWeightLbs)} lbs
+  Total Volume: ${fmtN(r.totalVolumeFt3)} ft³
+  Density: ${fmtN(r.density, 2)} PCF
+  Freight Class: ${r.fcRow.label}
+
+LANDED COST BREAKDOWN
+  Base Freight:    ${fmt(r.baseFx)}
+  Fuel Surcharge:  ${fmt(r.fscAmt)}
+  Import Duty:     ${fmt(r.dutyAmt)}
+  VAT / GST:       ${fmt(r.taxAmt)}
+  CBAM Carbon Fee: ${fmt(r.cbamAmt)}
+  Insurance:       ${fmt(r.insAmt)}
+  Brokerage:       ${fmt(r.brokerAmt)}
+  ─────────────────────────
+  TOTAL LANDED:    ${fmt(r.total)}
+
+CARBON EMISSIONS
+  Estimated CO₂e: ${fmtN(r.co2Kg)} kg
+
+Data sources: NMFC, STB, WTO MFN, USITC HTS, EU CBAM Reg. 2023/956, GLEC v3.
+All figures indicative. Verify with licensed professionals.`;
+
+  const blob = new Blob([content], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `logicore-report-${Date.now()}.txt`;
+  a.click();
+}
+
+/* ══════════════════════════════════════
+   AUTH (local simulation — UI only)
+══════════════════════════════════════ */
+let isLoggedIn = false;
+
+function setupAuth() {
+  document.getElementById('do-signin').addEventListener('click', () => {
+    isLoggedIn = true;
+    document.getElementById('auth-label').textContent = 'Account';
+    closeModal('auth-modal');
+  });
+  document.getElementById('do-signup').addEventListener('click', () => {
+    isLoggedIn = true;
+    document.getElementById('auth-label').textContent = 'Account';
+    closeModal('auth-modal');
+  });
+  document.querySelectorAll('.auth-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.auth-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('auth-signin').classList.toggle('hidden', t.dataset.auth !== 'signin');
+      document.getElementById('auth-signup').classList.toggle('hidden', t.dataset.auth !== 'signup');
+    });
+  });
+}
+
+/* ══════════════════════════════════════
+   OCR SIMULATION
+══════════════════════════════════════ */
+function setupOCR() {
+  const zone = document.getElementById('ocr-zone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    simulateOCR();
+  });
+  zone.addEventListener('click', simulateOCR);
+}
+
+function simulateOCR() {
+  const status = document.getElementById('ocr-status');
+  const msg    = document.getElementById('ocr-msg');
+  status.classList.remove('hidden');
+  msg.textContent = 'Parsing document structure…';
+  setTimeout(() => { msg.textContent = 'Extracting cargo line items…'; }, 1000);
+  setTimeout(() => { msg.textContent = 'Mapping dimensions and weights…'; }, 2000);
+  setTimeout(() => {
+    msg.textContent = 'Auto-filled 3 cargo items from document.';
+    // Pre-fill fields
+    const list = document.getElementById('cargo-items-list');
+    list.innerHTML = '';
+    const items = [
+      { comm:'Electronics – PCB assemblies', wt:450, l:60, w:50, h:40, qty:10 },
+      { comm:'Structural steel brackets',     wt:2200, l:120, w:80, h:60, qty:5 },
+      { comm:'Polymer packaging material',    wt:180, l:90, w:70, h:50, qty:20 },
+    ];
+    items.forEach((it, i) => {
+      cargoCount++;
+      createCargoItem(list, cargoCount);
+      const item = list.lastElementChild;
+      item.querySelector('.cargo-commodity').value = it.comm;
+      item.querySelector('.cargo-weight').value    = it.wt;
+      item.querySelector('.cargo-l').value         = it.l;
+      item.querySelector('.cargo-w').value         = it.w;
+      item.querySelector('.cargo-h').value         = it.h;
+      item.querySelector('.cargo-qty').value       = it.qty;
+    });
+  }, 3200);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initTabs();
+  setupForms();
+  setupAuth();
+  setupOCR();
+  renderBlog();
+
+  // Add initial cargo item
+  cargoCount++;
+  createCargoItem(document.getElementById('cargo-items-list'), cargoCount);
+
+  // Add initial planner item
+  plannerCount++;
+  createPlannerItem(document.getElementById('planner-items-list'), plannerCount);
+
+  // Update container stats display
+  const spec = CONTAINERS['40ft'];
+  document.getElementById('pl-vol').textContent  = (spec.l * spec.w * spec.h).toFixed(1) + ' m³';
+  document.getElementById('pl-cap').textContent  = (spec.payload / 1000).toFixed(1) + ' t';
+
+  // Add cargo
+  document.getElementById('add-cargo-btn').addEventListener('click', () => {
+    cargoCount++;
+    createCargoItem(document.getElementById('cargo-items-list'), cargoCount);
+  });
+
+  // Add planner item
+  document.getElementById('add-planner-item').addEventListener('click', () => {
+    plannerCount++;
+    createPlannerItem(document.getElementById('planner-items-list'), plannerCount);
+  });
+
+  // Calculate button
+  document.getElementById('calculate-btn').addEventListener('click', () => {
+    document.getElementById('result-empty').classList.add('hidden');
+    document.getElementById('result-content').classList.add('hidden');
+    document.getElementById('result-loading').classList.remove('hidden');
+    setTimeout(() => { calcLandedCost(); }, 1200);
+  });
+
+  // Container type change → redraw
+  document.getElementById('container-type').addEventListener('change', function() {
+    if (window._3dInited) {
+      drawContainer(this.value);
+      const spec = CONTAINERS[this.value];
+      document.getElementById('pl-vol').textContent = (spec.l * spec.w * spec.h).toFixed(1) + ' m³';
+      document.getElementById('pl-cap').textContent = (spec.payload / 1000).toFixed(1) + ' t';
+    }
+  });
+
+  // Optimize
+  document.getElementById('optimize-btn').addEventListener('click', () => {
+    if (!window._3dInited) { init3D(); setTimeout(packCargo, 300); }
+    else packCargo();
+  });
+
+  // Compliance
+  document.getElementById('comp-search-btn').addEventListener('click', runComplianceCheck);
+
+  // Save calc
+  document.getElementById('save-calc-btn').addEventListener('click', saveToAudit);
+
+  // Audit export
+  document.getElementById('export-audit-btn').addEventListener('click', exportAuditCSV);
+  document.getElementById('clear-audit-btn').addEventListener('click', () => {
+    if (confirm('Clear all audit records?')) { auditLog = []; renderAudit(); }
+  });
+
+  // PDF button
+  document.getElementById('pdf-btn').addEventListener('click', () => openModal('pdf-modal'));
+  document.getElementById('pdf-modal-close').addEventListener('click', () => closeModal('pdf-modal'));
+  document.getElementById('pdf-modal-cancel').addEventListener('click', () => closeModal('pdf-modal'));
+  document.getElementById('pdf-submit-btn').addEventListener('click', () => {
+    document.getElementById('pdf-gate-form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+  });
+
+  // Auth button
+  document.getElementById('auth-btn').addEventListener('click', () => {
+    if (isLoggedIn) alert('You are signed in. Account management coming soon.');
+    else openModal('auth-modal');
+  });
+  document.getElementById('auth-modal-close').addEventListener('click', () => closeModal('auth-modal'));
+
+  // Help button
+  document.getElementById('help-btn').addEventListener('click', () => openModal('help-modal'));
+  document.getElementById('help-modal-close').addEventListener('click', () => closeModal('help-modal'));
+  document.getElementById('help-modal-ok').addEventListener('click', () => closeModal('help-modal'));
+
+  // Backdrop click to close modals
+  document.querySelectorAll('.modal-backdrop').forEach(bd => {
+    bd.addEventListener('click', e => { if (e.target === bd) bd.classList.add('hidden'); });
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+# LogiCore 2026
+
+> Free professional-grade global freight cost, customs compliance, and 3D container load planning engine. No account required.
+
+## What LogiCore 2026 Does
+
+LogiCore 2026 is a browser-based logistics intelligence tool that calculates:
+
+- **Freight costs** across LTL, FTL, Ocean FCL/LCL, Air, and Express Courier modes using NMFC density-based freight class determination and published carrier tariff ranges (STB, IATA, WCI)
+- **Landed cost breakdowns** including base freight, fuel surcharges, import duties (WTO MFN schedules), VAT/GST, CBAM carbon fees, insurance, and customs brokerage estimates
+- **EU CBAM carbon fees** (Carbon Border Adjustment Mechanism, EU Reg. 2023/956) using EU Commission default emission factors and current ETS carbon prices
+- **Customs compliance requirements** by trade lane: required documentation, duty rates, risk flags including sanction screening, anti-dumping, UFLPA, and CBAM obligations
+- **3D container load planning** with ISO 668 container specs, weight-first bin packing optimisation, and interactive Three.js visualisation
+- **Audit trails** with CSV export of all calculations
+
+## Data Sources & Methodology
+
+All calculations use publicly available, authoritative sources:
+
+- **NMFC**: National Motor Freight Classification 100 Series — density-to-class tables
+- **STB**: US Surface Transportation Board — LTL/FTL tariff ranges
+- **IATA**: International Air Transport Association — air cargo tariff guides and volumetric weight formula (6,000 cm³/kg)
+- **WCI**: World Container Index — ocean spot rate benchmarks
+- **WTO Tariff Download Facility**: MFN duty schedules by HS code and destination
+- **USITC HTS**: US Harmonized Tariff Schedule
+- **EU CBAM Reg. 2023/956**: EU Commission default emission factors by commodity
+- **GLEC Framework v3**: Global Logistics Emissions Council — transport CO₂e factors by mode
+- **ISO 668**: International container dimension standards
+- **FMCSA**: US Federal Motor Carrier Safety Administration — fuel surcharge indices
+
+## Disclaimer
+
+All results are **indicative estimates for planning purposes only**. LogiCore 2026 is not a licensed customs broker, freight forwarder, carrier, or legal advisor. Freight rates, duty rates, regulatory requirements, and carbon prices change frequently. Always verify with qualified trade compliance professionals before making commercial decisions.
+
+## Key Pages
+
+- / — Main application (Freight Calculator, Compliance Checker, 3D Load Planner, Audit Trail)
+- /llms.txt — This file
+- /llms-full.txt — Extended methodology documentation
+
+## Contact
+
+Use the contact form at logicore2026.vercel.app for enquiries, feature requests, and data accuracy questions.
+
+## Freight Intelligence Blog
+
+LogiCore publishes 5 articles per week on:
+- EU CBAM compliance and reporting requirements
+- US Section 301 tariff updates
+- Ocean and air freight rate trends
+- NMFC freight classification disputes
+- Landed cost and total cost of ownership methodology
+- OFAC sanction compliance
+- Scope 3 freight emissions reporting (GHG Protocol)
